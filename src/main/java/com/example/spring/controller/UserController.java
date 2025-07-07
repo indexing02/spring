@@ -6,6 +6,7 @@ import com.example.spring.dto.UserUpdateDto;
 import com.example.spring.service.UserAuthService;
 import com.example.spring.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -27,13 +28,9 @@ public class UserController {
     }
 
     @GetMapping("/api/user/{userId}")
-    public String getUser(@PathVariable Long userId) {
-        try {
-            User user = userService.getUser(userId);
-            return "이름: " + user.getName() + ", 나이: " + user.getAge();
-        } catch (IllegalArgumentException e) {
-            return e.getMessage();
-        }
+    public ResponseEntity<String> getUser(@PathVariable Long userId) {
+        User user = userService.getUser(userId);
+        return ResponseEntity.ok("이름: " + user.getName() + ", 나이: " + user.getAge());
     }
 
 

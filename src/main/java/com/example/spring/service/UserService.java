@@ -4,6 +4,7 @@ import com.example.spring.Role;
 import com.example.spring.dto.User;
 import com.example.spring.dto.UserDto;
 import com.example.spring.dto.UserUpdateDto;
+import com.example.spring.exception.UserNotFoundException;
 import com.example.spring.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -25,8 +26,13 @@ public class UserService {
     public User getUser(Long id) {
         User user = userRepository.findById(id);
 
+        //잘못된 값 검사
+        if (id == null || id < 0) {
+            throw new IllegalArgumentException("ID는 음수보다 커야 합니다");
+        }
+
         if (user == null) {
-            throw new IllegalArgumentException("해당되는 유저가 없습니다.");
+            throw new UserNotFoundException("해당 유저를 찾을 수 없습니다");
         }
 
         return user;

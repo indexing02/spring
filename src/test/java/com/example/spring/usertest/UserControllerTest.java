@@ -3,6 +3,7 @@ package com.example.spring.usertest;
 import com.example.spring.controller.UserController;
 import com.example.spring.dto.User;
 import com.example.spring.dto.UserDto;
+import com.example.spring.exception.UserNotFoundException;
 import com.example.spring.service.UserAuthService;
 import com.example.spring.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -16,6 +17,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+import static org.hamcrest.Matchers.containsString;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -70,6 +72,46 @@ public class UserControllerTest {
        Mockito.verify(userService).getUser(0L);
 
    }
+
+    // 1. 유저 ID가 음수일 때 → IllegalArgumentException 기대
+   @Test
+   @DisplayName("유저 조회 실패 - 잘못된 인자 전달")
+   public void getUSer_throwsIllegalArgument() throws Exception {
+       Long userId = -1L;
+
+       given(userService.getUser(userId)).willThrow(new IllegalArgumentException("ID는 음수보다 커야 합니다"));
+
+       mockMvc.perform(MockMvcRequestBuilders.get("/api/user/"+userId))
+               .andExpect(status().isBadRequest())
+               .andExpect(content().string("ID는 음수보다 커야 합니다"));
+   }
+
+    // 2. 유저 ID가 존재하지 않을 때 → UserNotFoundException 기대
+   @Test
+   @DisplayName("유저 조회 실패 - 존재 하지 않는 ID")
+   public void getUser_throwsUserNotFound() throws Exception {
+       Long userId = -999L;
+
+       given(userService.getUser(userId)).willThrow(new UserNotFoundException("해당 유저를 찾을 수 없습니다"));
+
+       mockMvc.perform(MockMvcRequestBuilders.get("/api/user/"+userId))
+               .andExpect(status().isNotFound())
+               .andExpect(content().string("해당 유저를 찾을 수 없습니다"));
+   }
+
+
+   //문자열 ID가 들어올 때 → MethodArgumentTypeMismatchException 기대
+   @Test
+   @DisplayName("유저 조회 실패 - ID 타입 불일치")
+   public void getUser_throwsTypeMismatch() throws Exception {
+
+       String userId = "abc";
+
+       mockMvc.perform(MockMvcRequestBuilders.get("/api/user/"+userId))
+               .andExpect(status().isBadRequest())
+               .andExpect(content().string(containsString("유효하지 않는 ID 형식입니다.")));
+   }
+
 
 
 }

@@ -10,9 +10,13 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.BDDMockito.given;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
 public class UserServiceTest {
@@ -31,7 +35,6 @@ public class UserServiceTest {
         userDto.setName("서연");
         userDto.setAge(24);
 
-        User user = new User(0L,"서연",24);
 
         Mockito.when(userRepository.userSave(any(User.class))).thenReturn(0L);
 
@@ -40,6 +43,7 @@ public class UserServiceTest {
 
         //then
         assertThat(saveId).isEqualTo(0L);
+
 
         // 실제로 userSave()가 호출되었는지 확인
         Mockito.verify(userRepository).userSave(any(User.class));
@@ -64,4 +68,5 @@ public class UserServiceTest {
         //실제로 findById()가 호출되었는지 확인
         Mockito.verify(userRepository).findById(any(Long.class));
     }
+
 }
