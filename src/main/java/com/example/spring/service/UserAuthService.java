@@ -27,14 +27,14 @@ public class UserAuthService {
     // 공통 유효성 검사
     private void validateId(Long id) {
         if (id == null || id < 0) {
-            throw new IllegalArgumentException("ID는 음수보다 커야 합니다.");
+            throw new IllegalArgumentException("ID는 음수보다 커야 합니다");
         }
     }
 
     private User findValidUserById(Long id) {
         User user = userRepository.findById(id);
         if (user == null) {
-            throw new IllegalArgumentException("존재하지 않는 유저입니다.");
+            throw new IllegalArgumentException("해당 유저를 찾을 수 없습니다");
         }
         return user;
     }
