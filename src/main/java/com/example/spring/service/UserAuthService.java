@@ -12,24 +12,30 @@ public class UserAuthService {
 
     private final UserRepository userRepository;
 
-
+    // ADMIN 여부만 판단하는 메서드 (핵심 비즈니스)
     public boolean isAdmin(Long id) {
-
-        User user = userRepository.findById(id);
-
-        if (user == null) {
-            throw new IllegalArgumentException("존재하지 않는 유저입니다.");
-        }
+        validateId(id);
+        User user = findValidUserById(id);
         return user.getRole().equals(Role.ADMIN);
     }
 
-
+    // 메시지 응답은 컨트롤러에서 해석할 수도 있음
     public String roleCheck(Long id) {
-       if (isAdmin(id)) {
-           return "ADMIN 인증 되었습니다";
-       }
-       return "권한이 없습니다.";
+        return isAdmin(id) ? "ADMIN 인증 되었습니다" : "권한이 없습니다.";
     }
 
+    // 공통 유효성 검사
+    private void validateId(Long id) {
+        if (id == null || id < 0) {
+            throw new IllegalArgumentException("ID는 음수보다 커야 합니다.");
+        }
+    }
 
+    private User findValidUserById(Long id) {
+        User user = userRepository.findById(id);
+        if (user == null) {
+            throw new IllegalArgumentException("존재하지 않는 유저입니다.");
+        }
+        return user;
+    }
 }

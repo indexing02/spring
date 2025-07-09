@@ -19,12 +19,9 @@ public class UserController {
     private final UserAuthService userAuthService;
 
     @PostMapping("/api/user3")
-    public String saveUser(@RequestBody UserDto userDto) {
+    public ResponseEntity<String> saveUser(@RequestBody UserDto userDto) {
         Long userId = userService.saveUser(userDto); // ✅ 서비스 통해 저장
-        System.out.println("id: " + userId);
-        System.out.println("이름: " + userDto.getName());
-        System.out.println("나이: " + userDto.getAge());
-        return "저장 완료! ID: " + userId;
+        return ResponseEntity.ok("저장 완료! ID: " + userId);
     }
 
     @GetMapping("/api/user/{userId}")
@@ -33,64 +30,37 @@ public class UserController {
         return ResponseEntity.ok("이름: " + user.getName() + ", 나이: " + user.getAge());
     }
 
-
     @GetMapping("/api/users/{userId}")
-    public List<User> getUsers(@PathVariable Long userId) {
-        return userService.getUsers(userId);
+    public ResponseEntity<List<User>> getUsers(@PathVariable Long userId) {
+        return ResponseEntity.ok(userService.getUsers(userId));
     }
 
     @PutMapping("/api/users/{userId}")
-    public String putUpdateUser(@RequestBody UserUpdateDto userUpdateDto) {
-        System.out.println("put 수정전 : " + userUpdateDto.getId() + ", " + userService.getUser(userUpdateDto.getId()).getName());
+    public ResponseEntity<String> putUpdateUser(@RequestBody UserUpdateDto userUpdateDto) {
         userService.putUpdateUser(userUpdateDto);
-        System.out.println("put 수정후 : " + userUpdateDto.getId() + ", " + userUpdateDto.getName());
-        return "수정 완료 (PUT)";
+        return ResponseEntity.ok("수정완료 (PUT)");
     }
 
     @PatchMapping("/api/users/{userId}")
-    public String patchUpdateUser(@PathVariable Long userId, @RequestBody String name) {
-        System.out.println("patch 수정전 : " + userId + ", " + userService.getUser(userId).getName());
+    public ResponseEntity<String> patchUpdateUser(@PathVariable Long userId, @RequestBody String name) {
         userService.patchUpdateUser(userId, name);
-        System.out.println("patch 수정후 : " + userId + ", " + userService.getUser(userId).getName());
-        return "수정 완료 (PATCH)";
+        return ResponseEntity.ok("수정완료 (PATCH)");
     }
 
     @DeleteMapping("/api/users/{userId}")
-    public String deleteUser(@PathVariable Long userId) {
-        try {
-            userService.deleteUser(userId);
-            return "ID: " + userId + " 삭제 완료";
-        }catch (IllegalArgumentException e) {
-            return e.getMessage(); //유저가 존재하지 않습니다
-        }catch (IllegalStateException e) {
-            return e.getMessage(); //이미 삭제된 유저입니다
-        }
+    public ResponseEntity<String> deleteUser(@PathVariable Long userId) {
+        userService.deleteUser(userId);
+        return ResponseEntity.ok("ID: " + userId + " 삭제 완료");
     }
 
-    @PatchMapping("/api/admin/{userId}")
-    public String admin(@PathVariable Long userId) {
-        try{
-            userService.roleUpdate(userId);
-            return "ADMIN으로 지정 되었습니다.";
-        }catch (IllegalArgumentException e) {
-            return e.getMessage();
-        }
+    @PatchMapping("/api/users/{userId}/role")
+    public ResponseEntity<String> admin(@PathVariable Long userId) {
+        userService.roleUpdate(userId);
+        return ResponseEntity.ok("ADMIN으로 지정 되었습니다.");
     }
 
-    @GetMapping("/api/role/{userId}")
-    public String role(@PathVariable Long userId) {
-        try {
-            return userAuthService.roleCheck(userId);
-        }catch (IllegalArgumentException e) {
-            return e.getMessage();
-        }
+    @GetMapping("/api/users/{userId}/role")
+    public ResponseEntity<String> role(@PathVariable Long userId) {
+        return ResponseEntity.ok(userAuthService.roleCheck(userId));
     }
-
-
-
-
-
-
-
-
 }
