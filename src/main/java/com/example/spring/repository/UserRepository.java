@@ -1,11 +1,9 @@
 package com.example.spring.repository;
 
-import com.example.spring.Role;
-import com.example.spring.dto.User;
+import com.example.spring.domain.User;
 import com.example.spring.dto.UserDto;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;

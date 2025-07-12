@@ -1,4 +1,4 @@
-package com.example.spring;
+package com.example.spring.domain;
 
 public enum Role {
     ADMIN,

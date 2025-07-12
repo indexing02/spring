@@ -1,7 +1,9 @@
 package com.example.spring.service;
 
-import com.example.spring.Role;
-import com.example.spring.dto.User;
+import com.example.spring.domain.Role;
+import com.example.spring.domain.User;
+import com.example.spring.exception.UserException;
+import com.example.spring.exception.UserExceptionMessage;
 import com.example.spring.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -24,17 +26,21 @@ public class UserAuthService {
         return isAdmin(id) ? "ADMIN 인증 되었습니다" : "권한이 없습니다.";
     }
 
-    // 공통 유효성 검사
+    // =========================
+    // ✅ 공통 유효성 검사 메서드
+    // =========================
+
     private void validateId(Long id) {
         if (id == null || id < 0) {
-            throw new IllegalArgumentException("ID는 음수보다 커야 합니다");
+            throw new UserException(UserExceptionMessage.ILLEGAL_ARGUMENT);
         }
     }
 
     private User findValidUserById(Long id) {
         User user = userRepository.findById(id);
+
         if (user == null) {
-            throw new IllegalArgumentException("해당 유저를 찾을 수 없습니다");
+            throw new UserException(UserExceptionMessage.USER_NOT_FOUND);
         }
         return user;
     }

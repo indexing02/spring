@@ -1,7 +1,5 @@
-package com.example.spring.dto;
+package com.example.spring.domain;
 
-import com.example.spring.Role;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 

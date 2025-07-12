@@ -1,6 +1,6 @@
 package com.example.spring.usertest;
 
-import com.example.spring.dto.User;
+import com.example.spring.domain.User;
 import com.example.spring.dto.UserDto;
 import com.example.spring.repository.UserRepository;
 import com.example.spring.service.UserService;
@@ -10,13 +10,9 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.BDDMockito.given;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
 public class UserServiceTest {

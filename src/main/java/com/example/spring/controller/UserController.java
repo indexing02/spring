@@ -1,6 +1,6 @@
 package com.example.spring.controller;
 
-import com.example.spring.dto.User;
+import com.example.spring.domain.User;
 import com.example.spring.dto.UserDto;
 import com.example.spring.dto.UserUpdateDto;
 import com.example.spring.service.UserAuthService;
