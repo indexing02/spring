@@ -29,7 +29,7 @@ public class UserRepository {
 
     public User findById(Long id) {
         User user = userMap.get(id);
-        if (user == null || user.isDeletd()) {
+        if (user == null || user.isDeleted()) {
             return null; // 유저가 없거나 논리 삭제된 경우 null 리턴
         }
         return user;
@@ -43,7 +43,7 @@ public class UserRepository {
 
     public List<User> findAll() {
         return userMap.values().stream()
-                .filter(user -> !user.isDeletd())
+                .filter(user -> !user.isDeleted())
                 .collect(Collectors.toList());
     }
 

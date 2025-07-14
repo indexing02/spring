@@ -63,11 +63,11 @@ public class UserService {
             throw new UserException(UserExceptionMessage.USER_NOT_FOUND);
         }
 
-        if (user.isDeletd()) {
+        if (user.isDeleted()) {
             throw new UserException(UserExceptionMessage.USER_ALREADY_DELETED);
         }
 
-        user.setDeletd(true);
+        user.setDeleted(true);
         userRepository.updateUser(user);
     }
 
