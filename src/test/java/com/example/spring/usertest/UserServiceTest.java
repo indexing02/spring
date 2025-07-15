@@ -3,7 +3,7 @@ package com.example.spring.usertest;
 import com.example.spring.domain.User;
 import com.example.spring.dto.UserDto;
 import com.example.spring.repository.UserRepository;
-import com.example.spring.service.UserService;
+import com.example.spring.service.UserServiceImpl;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -18,7 +18,7 @@ import static org.mockito.ArgumentMatchers.any;
 public class UserServiceTest {
 
     @Autowired
-    private UserService userService;
+    private UserServiceImpl userService;
 
     @MockBean
     private UserRepository userRepository;

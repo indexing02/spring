@@ -14,9 +14,11 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class UserService {
+public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
+
+    // 현재 @Primary 설정된 JpaUserAuthServiceImpl이 주입됨
     private final UserAuthService userAuthService;
 
     public long saveUser(UserDto userDto) {
