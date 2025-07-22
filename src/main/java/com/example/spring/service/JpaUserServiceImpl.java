@@ -8,13 +8,11 @@ import com.example.spring.exception.UserException;
 import com.example.spring.exception.UserExceptionMessage;
 import com.example.spring.repository.JpaUserRepository;  // JPA 리포지토리
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-@Primary
 @RequiredArgsConstructor
 public class JpaUserServiceImpl implements UserService {
 
@@ -93,7 +91,7 @@ public class JpaUserServiceImpl implements UserService {
     }
 
     private User findValidUserById(Long id) {
-        return userRepository.findById(id)
+        return userRepository.findActiveById(id)
                 .orElseThrow(() -> new UserException(UserExceptionMessage.USER_NOT_FOUND));
     }
 }

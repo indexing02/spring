@@ -23,6 +23,6 @@ public interface JpaUserRepository extends JpaRepository<User, Long> {
 
     // 논리 삭제되지 않은 사용자만 ID로 조회 (일반 사용자용)
     @Query("select u from User u where u.id = :id and u.isDeleted = false")
-    Optional<User> findById(Long id); //
+    Optional<User> findActiveById(Long id); //
 
 }
